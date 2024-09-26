@@ -24,6 +24,20 @@ const swaggerDefinition = {
             description: "Local server",
         },
     ],
+    components: {
+        securitySchemes: {
+            Bearer: {
+                type: "http",
+                scheme: "Bearer",
+                bearerFormat: "JWT", // Optional, just for documentation
+            },
+        },
+    },
+    security: [
+        {
+            Bearer: [], // Global security scheme for all routes if you want all routes to require it
+        },
+    ],
 };
 // Swagger options, specifying the path to the routes where API documentation is defined
 const options = {

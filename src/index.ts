@@ -7,7 +7,7 @@ import swaggerUi from "swagger-ui-express";
 import dotenv from "dotenv";
 import { swaggerSpec } from "./swagger-ui";
 import { io, server } from "./socket";
-import { userRouter } from "./routes";
+import { authenticationRoutes } from "./routes";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -29,7 +29,7 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 // Difference routes in the application
-app.use("/api/v1/authhentication/", userRouter)
+app.use("/api/v1/authentication/", authenticationRoutes)
 
 // Handle Socket.IO connection events
 io(app).on("connection", (socket) => {

@@ -26,7 +26,7 @@ app.get("/", (_req, res) => {
     res.send("Welcome to ecommerce RESTful APIs"); // Response for the base URL
 });
 // Difference routes in the application
-app.use("/api/v1/authhentication/", routes_1.userRouter);
+app.use("/api/v1/authentication/", routes_1.authenticationRoutes);
 // Handle Socket.IO connection events
 (0, socket_1.io)(app).on("connection", (socket) => {
     console.log("A user connected:", socket.id); // Log user connections by socket ID

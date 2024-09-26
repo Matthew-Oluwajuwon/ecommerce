@@ -1,3 +1,3 @@
-import userRouter from "./user";
+import authenticationRoutes from "./authentication";
 
-export { userRouter };
+export { authenticationRoutes };
