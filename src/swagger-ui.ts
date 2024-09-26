@@ -11,12 +11,12 @@ const swaggerDefinition = {
     },
     servers: [
       {
-        url: "http://localhost:8001", // Local development server
-        description: "Local server",
-      },
-      {
         url: "https://ecommerce-production-409b.up.railway.app", // Production server URL
         description: "Production server",
+      },
+      {
+        url: "http://localhost:8001", // Local development server
+        description: "Local server",
       },
     ],
   };
