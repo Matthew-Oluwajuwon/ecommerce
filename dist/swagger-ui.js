@@ -16,7 +16,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: "https://ecommerce-production-409b.up.railway.app", // Production server URL
+            url: "https://ecommerce-production-409b.railway.app", // Production server URL
             description: "Production server",
         },
         {
@@ -27,7 +27,7 @@ const swaggerDefinition = {
     components: {
         securitySchemes: {
             Bearer: {
-                type: "http",
+                type: "https",
                 scheme: "Bearer",
                 bearerFormat: "JWT", // Optional, just for documentation
             },
