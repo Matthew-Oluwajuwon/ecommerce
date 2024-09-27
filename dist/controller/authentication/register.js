@@ -15,12 +15,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("joi"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const cloudinaryConfig_1 = __importDefault(require("../../utils/cloudinaryConfig"));
 const User_1 = require("../../models/User"); // Assuming you have a User model for MongoDB
 const envConfig_1 = require("../../utils/envConfig");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     // Define the validation schema using Joi
     const schema = joi_1.default.object({
+        firstName: joi_1.default.string().min(3).optional().messages({
+            "string.min": "First name must be at least 3 characters long",
+        }),
+        lastName: joi_1.default.string().min(3).optional().messages({
+            "string.min": "Last name must be at least 3 characters long",
+        }),
+        phone_number: joi_1.default.string().min(10).optional().messages({
+            "string.min": "Phone number must be at least 10 characters long",
+        }),
+        home_address: joi_1.default.string().min(3).optional().messages({
+            "string.min": "Home address must be at least 3 characters long",
+        }),
+        profile_image: joi_1.default.string().optional(),
         email_address: joi_1.default.string().email().required().messages({
             "string.email": "Please provide a valid email address",
             "string.empty": "Email is required",
@@ -40,13 +54,13 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(400).json({
             responseCode: 400,
             responseMessage: (_a = error.details[0].message) === null || _a === void 0 ? void 0 : _a.replace(/\"/g, ""),
-            data: null
+            data: null,
         });
     }
-    const { email_address, password, role_type } = req.body;
+    const { email_address, password, role_type, firstName, lastName, phone_number, home_address, profile_image, } = req.body;
     try {
         // Check if the user already exists
-        const existingUser = yield User_1.User.findOne({ email_address: email_address });
+        const existingUser = yield User_1.User.findOne({ email_address });
         if (existingUser) {
             return res.status(409).json({
                 responseCode: 409,
@@ -54,14 +68,35 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 data: null,
             });
         }
+        // Upload the image to Cloudinary
+        let uploadResult;
+        if (profile_image) {
+            try {
+                uploadResult = yield cloudinaryConfig_1.default.uploader.upload(profile_image);
+            }
+            catch (uploadError) {
+                console.error("Cloudinary upload error:", uploadError);
+                return res.status(500).json({
+                    responseCode: 500,
+                    responseMessage: `Uploading image failed: ${uploadError.message}`,
+                    error: uploadError.message,
+                    data: null,
+                });
+            }
+        }
         // Hash the password
         const salt = yield bcryptjs_1.default.genSalt(10);
         const hashedPassword = yield bcryptjs_1.default.hash(password, salt);
         // Create a new user
         const newUser = new User_1.User({
-            email_address: email_address,
+            email_address,
             password: hashedPassword,
             role_type,
+            firstName, // Optional fields
+            lastName, // Optional fields
+            phone_number, // Optional fields
+            home_address, // Optional fields
+            profile_image: uploadResult ? uploadResult.secure_url : null, // Assign uploaded image URL
         });
         // Save the user to the database
         yield newUser.save();
@@ -77,6 +112,11 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             data: {
                 email_address: newUser.email_address,
                 role_type: newUser.role_type,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                phone_number: newUser.phone_number,
+                home_address: newUser.home_address,
+                profile_image: newUser.profile_image,
                 created_at: newUser.createdAt,
                 token,
             },
