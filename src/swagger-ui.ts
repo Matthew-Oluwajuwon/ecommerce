@@ -11,7 +11,7 @@ const swaggerDefinition = {
     },
     servers: [
       {
-        url: "https://ecommerce-production-da15.railway.app", // Production server URL
+        url: "https://ecommerce-production-da15.up.railway.app", // Production server URL
         description: "Production server",
       },
       {
