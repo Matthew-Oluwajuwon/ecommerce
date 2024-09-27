@@ -38,7 +38,7 @@ const swaggerDefinition = {
   // Swagger options, specifying the path to the routes where API documentation is defined
   const options = {
     swaggerDefinition,
-    apis: [path.resolve(__dirname, process.env.DEV === 'true' ? "./routes/*.ts" : "./dist/routes/*.js")], // Use TypeScript in development, JavaScript in production
+    apis: [path.resolve(__dirname, process.env.DEV === 'true' ? "./routes/*.ts" : "./routes/*.js")], // Use TypeScript in development, JavaScript in production
   };
   
   // Initialize swagger-jsdoc which returns validated Swagger spec in JSON format
