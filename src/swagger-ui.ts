@@ -26,7 +26,7 @@ const swaggerDefinition = {
           scheme: "Bearer",
           bearerFormat: "JWT", // Optional, just for documentation
         },
-      },
+      }, 
     },
     security: [
       {
