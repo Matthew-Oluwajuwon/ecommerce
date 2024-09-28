@@ -13,6 +13,7 @@ const swagger_ui_1 = require("./swagger-ui");
 const socket_1 = require("./socket");
 const routes_1 = require("./routes");
 const merchantProduct_1 = __importDefault(require("./routes/merchantProduct"));
+const cart_1 = __importDefault(require("./routes/cart"));
 // Load environment variables from .env file
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -33,6 +34,7 @@ app.get("/", (_req, res) => {
 app.use("/api/v1/authentication/", routes_1.authenticationRoutes);
 app.use("/api/v1/product/", routes_1.productRoutes);
 app.use("/api/v1/merchant-product/", merchantProduct_1.default);
+app.use("/api/v1/cart/", cart_1.default);
 // Handle Socket.IO connection events
 (0, socket_1.io)(app).on("connection", (socket) => {
     console.log("A user connected:", socket.id); // Log user connections by socket ID

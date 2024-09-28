@@ -9,6 +9,7 @@ import { swaggerSpec } from "./swagger-ui";
 import { io, server } from "./socket";
 import { authenticationRoutes, productRoutes } from "./routes";
 import merchantProductRoutes from "./routes/merchantProduct";
+import cartRoutes from "./routes/cart";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -37,6 +38,7 @@ app.get("/", (_req: Request, res: Response) => {
 app.use("/api/v1/authentication/", authenticationRoutes)
 app.use("/api/v1/product/", productRoutes)
 app.use("/api/v1/merchant-product/", merchantProductRoutes)
+app.use("/api/v1/cart/", cartRoutes)
 
 // Handle Socket.IO connection events
 io(app).on("connection", (socket) => {

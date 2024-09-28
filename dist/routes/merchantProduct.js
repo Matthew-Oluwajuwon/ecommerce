@@ -11,7 +11,7 @@ const merchantProductRoutes = (0, express_1.Router)();
  * @swagger
  * tags:
  *   - name: Merchant Product Controller
- *     description: Product management routes
+ *     description: Merchant Product management routes
  */
 /**
  * @swagger

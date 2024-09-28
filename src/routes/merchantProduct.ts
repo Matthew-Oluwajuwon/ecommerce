@@ -8,7 +8,7 @@ const merchantProductRoutes = Router();
  * @swagger
  * tags:
  *   - name: Merchant Product Controller
- *     description: Product management routes
+ *     description: Merchant Product management routes
  */
 
 
