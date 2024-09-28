@@ -173,8 +173,10 @@ authenticationRoutes.post("/register", register);
  *               email_address:
  *                 type: string
  *                 format: email
+ *                 example: matthewoluwajuwon056@gmail.com
  *               password:
  *                 type: string
+ *                 example: Olajuwon18@
  *             required:
  *               - email
  *               - password
