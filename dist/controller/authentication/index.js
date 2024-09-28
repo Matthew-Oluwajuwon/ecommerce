@@ -3,7 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changePassword = exports.forgotPassword = exports.updateUser = exports.getUserInfo = exports.login = exports.register = void 0;
+exports.approveOrDisapproveUser = exports.changePassword = exports.forgotPassword = exports.updateUser = exports.getUserInfo = exports.login = exports.register = void 0;
+const approveOrDisapproveUser_1 = require("./approveOrDisapproveUser");
+Object.defineProperty(exports, "approveOrDisapproveUser", { enumerable: true, get: function () { return approveOrDisapproveUser_1.approveOrDisapproveUser; } });
 const changePassword_1 = require("./changePassword");
 Object.defineProperty(exports, "changePassword", { enumerable: true, get: function () { return changePassword_1.changePassword; } });
 const forgotPassword_1 = require("./forgotPassword");

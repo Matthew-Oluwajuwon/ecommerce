@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+    approveOrDisapproveUser,
   changePassword,
   forgotPassword,
   getUserInfo,
@@ -512,5 +513,93 @@ authenticationRoutes.post("/forgot-password", forgotPassword);
  */
 
 authenticationRoutes.post("/change-password", changePassword);
+
+/**
+ * @swagger
+ * /api/v1/authentication/approve-user:
+ *   post:
+ *     summary: Approve or disapprove a user
+ *     description: Update the user's approval status to either APPROVED or DISAPPROVED.
+ *     tags: [Authentication Controller]
+ *     schema:
+ *        type: string
+ *        example: Bearer your_token_here
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 example: "userId"
+ *               status:
+ *                 type: string
+ *                 enum:
+ *                   - "APPROVED"
+ *                   - "DISAPPROVED"
+ *                 example: "APPROVED"
+ *     responses:
+ *       200:
+ *         description: User approved or disapproved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 200
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "User has been approved."
+ *       400:
+ *         description: Bad Request.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 400
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "User ID and status are required."
+ *                 data:
+ *                   type: null
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 404
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "User not found."
+ *                 data:
+ *                   type: null
+ *       500:
+ *         description: Internal Server Error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 500
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "Internal Server Error."
+ *                 data:
+ *                   type: null
+ */
+authenticationRoutes.post("/approve-user", authenticateJWT, approveOrDisapproveUser);
 
 export default authenticationRoutes;

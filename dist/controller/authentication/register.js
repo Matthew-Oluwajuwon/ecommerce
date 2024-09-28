@@ -98,6 +98,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             phone_number, // Optional fields
             home_address, // Optional fields
             profile_image: uploadResult ? uploadResult.secure_url : null, // Assign uploaded image URL
+            isApproved: role_type === "ADMIN"
         });
         // Save the user to the database
         yield newUser.save();
@@ -120,6 +121,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 home_address: newUser.home_address,
                 profile_image: newUser.profile_image,
                 created_at: newUser.createdAt,
+                isApproved: newUser.isApproved,
                 token,
             },
         });

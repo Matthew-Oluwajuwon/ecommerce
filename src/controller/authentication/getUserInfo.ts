@@ -6,7 +6,7 @@ export const getUserInfo = async (req: any, res: Response) => {
   const userId = req.user.id;
 
   try {
-    const user = await User.findById(userId).select("-password -_id -__v"); // Exclude password from the result
+    const user = await User.findById(userId).select("-password -__v"); // Exclude password from the result
 
     if (!user) {
       return res.status(404).json({

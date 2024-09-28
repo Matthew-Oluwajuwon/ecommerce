@@ -82,14 +82,18 @@ export const createProduct = async (req: any, res: Response) => {
     const product = new Product({
       ...req.body,
       productImage: uploadResult.secure_url,
+      user: user.id,
     });
 
     await product.save();
 
+    // Populate the user field with user details
+    const populatedProduct = await Product.findById(product._id).populate('user', '-password'); // Exclude sensitive fields like password
+
     return res.status(201).json({
       responseCode: 201,
       responseMessage: "Product created successfully",
-      data: product,
+      data: populatedProduct,
     });
   } catch (err) {
     console.error("Error creating product:", err);

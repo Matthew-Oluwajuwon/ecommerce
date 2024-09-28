@@ -73,12 +73,14 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 data: null,
             });
         }
-        const product = new Product_1.Product(Object.assign(Object.assign({}, req.body), { productImage: uploadResult.secure_url }));
+        const product = new Product_1.Product(Object.assign(Object.assign({}, req.body), { productImage: uploadResult.secure_url, user: user.id }));
         yield product.save();
+        // Populate the user field with user details
+        const populatedProduct = yield Product_1.Product.findById(product._id).populate('user', '-password'); // Exclude sensitive fields like password
         return res.status(201).json({
             responseCode: 201,
             responseMessage: "Product created successfully",
-            data: product,
+            data: populatedProduct,
         });
     }
     catch (err) {

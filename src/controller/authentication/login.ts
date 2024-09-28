@@ -3,13 +3,34 @@ import { User } from "../../models/User"; // Import your User model
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { secretKey } from "../../utils/envConfig";
+import Joi from "joi";
 
 // Login Controller
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
+  const schema = Joi.object({
+    email_address: Joi.string().email().required().messages({
+      "string.email": "Please provide a valid email address",
+      "string.empty": "Email is required",
+    }),
+    password: Joi.string().min(8).required().messages({
+      "string.min": "Password must be at least 8 characters long",
+      "string.empty": "Password is required",
+    }),
+  });
+  
+  // Validate the request body against the schema
+  const { error } = schema.validate(req.body);
+  if (error) {
+    return res.status(400).json({
+      responseCode: 400,
+      responseMessage: error.details[0].message?.replace(/\"/g, ""),
+      data: null,
+    });
+  }
+  
+  const { email_address, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email_address });
 
     if (!user) {
       return res.status(401).json({
@@ -31,7 +52,7 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign(
       {
         id: user._id,
-        email: user.email_address,
+        email_address: user.email_address,
         role_type: user.role_type,
         isApproved: user.isApproved,
       },

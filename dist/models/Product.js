@@ -12,7 +12,7 @@ const productSchema = new Schema({
         min: 3,
         trim: true,
         required: true,
-        unique: true
+        unique: true,
     },
     productDescription: {
         type: String,
@@ -55,6 +55,10 @@ const productSchema = new Schema({
             "IPHONE_16_SERIES",
         ],
         required: true,
+    },
+    user: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "User",
     },
 }, {
     timestamps: true,

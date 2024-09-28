@@ -15,7 +15,7 @@ const User_1 = require("../../models/User"); // Adjust the import according to y
 const getUserInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.user.id;
     try {
-        const user = yield User_1.User.findById(userId).select("-password -_id -__v"); // Exclude password from the result
+        const user = yield User_1.User.findById(userId).select("-password -__v"); // Exclude password from the result
         if (!user) {
             return res.status(404).json({
                 responseCode: 500,
