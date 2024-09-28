@@ -27,7 +27,7 @@ const swaggerDefinition = {
     components: {
         securitySchemes: {
             Bearer: {
-                type: "https",
+                type: "http",
                 scheme: "Bearer",
                 bearerFormat: "JWT", // Optional, just for documentation
             },

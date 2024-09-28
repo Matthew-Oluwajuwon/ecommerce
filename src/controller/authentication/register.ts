@@ -4,9 +4,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cloudinary from "../../utils/cloudinaryConfig";
 
-
 import { User } from "../../models/User"; // Assuming you have a User model for MongoDB
 import { secretKey } from "../../utils/envConfig";
+import { sendEmail } from "../../middleware/sendMail";
 
 const register = async (req: Request, res: Response) => {
   // Define the validation schema using Joi
@@ -59,7 +59,6 @@ const register = async (req: Request, res: Response) => {
     profile_image,
   } = req.body;
 
-  
   try {
     // Check if the user already exists
     const existingUser = await User.findOne({ email_address });
@@ -73,7 +72,7 @@ const register = async (req: Request, res: Response) => {
 
     // Upload the image to Cloudinary
     let uploadResult: any;
-    
+
     if (profile_image) {
       try {
         uploadResult = await cloudinary.uploader.upload(profile_image);
@@ -86,7 +85,6 @@ const register = async (req: Request, res: Response) => {
           data: null,
         });
       }
-      
     }
 
     // Hash the password
@@ -98,10 +96,10 @@ const register = async (req: Request, res: Response) => {
       email_address,
       password: hashedPassword,
       role_type,
-      firstName,      // Optional fields
-      lastName,       // Optional fields
-      phone_number,   // Optional fields
-      home_address,   // Optional fields
+      firstName, // Optional fields
+      lastName, // Optional fields
+      phone_number, // Optional fields
+      home_address, // Optional fields
       profile_image: uploadResult ? uploadResult.secure_url : null, // Assign uploaded image URL
     });
 
@@ -113,6 +111,13 @@ const register = async (req: Request, res: Response) => {
       { id: newUser._id, role_type: newUser.role_type }, // Payload
       secretKey as string, // Secret key
       { expiresIn: "1h" } // Token expiration
+    );
+
+    await sendEmail(
+      email_address,
+      "Welcome!, Registration successful",
+      `Welcome ${email_address}`,
+      "You  have been onboarded successfully"
     );
 
     // Send the response

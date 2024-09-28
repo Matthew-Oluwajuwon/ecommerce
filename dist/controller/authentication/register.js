@@ -18,6 +18,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const cloudinaryConfig_1 = __importDefault(require("../../utils/cloudinaryConfig"));
 const User_1 = require("../../models/User"); // Assuming you have a User model for MongoDB
 const envConfig_1 = require("../../utils/envConfig");
+const sendMail_1 = require("../../middleware/sendMail");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     // Define the validation schema using Joi
@@ -105,6 +106,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         envConfig_1.secretKey, // Secret key
         { expiresIn: "1h" } // Token expiration
         );
+        yield (0, sendMail_1.sendEmail)(email_address, "Welcome!, Registration successful", `Welcome ${email_address}`, "You  have been onboarded successfully");
         // Send the response
         return res.status(201).json({
             responseCode: 201,
