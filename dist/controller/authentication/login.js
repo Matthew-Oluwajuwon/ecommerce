@@ -37,7 +37,12 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 data: null,
             });
         }
-        const token = jsonwebtoken_1.default.sign({ id: user._id, email: user.email_address }, envConfig_1.secretKey, {
+        const token = jsonwebtoken_1.default.sign({
+            id: user._id,
+            email: user.email_address,
+            role_type: user.role_type,
+            isApproved: user.isApproved,
+        }, envConfig_1.secretKey, {
             expiresIn: "1h",
         });
         return res.status(200).json({

@@ -10,7 +10,7 @@ const authenticationRoutes = (0, express_1.Router)();
 /**
  * @swagger
  * tags:
- *   - name: Authentication
+ *   - name: Authentication Controller
  *     description: Manages all authentication related routes
  */
 /**
@@ -18,7 +18,7 @@ const authenticationRoutes = (0, express_1.Router)();
  * /api/v1/authentication/register:
  *   post:
  *     summary: Register a new user
- *     tags: [Authentication]
+ *     tags: [Authentication Controller]
  *     requestBody:
  *       required: true
  *       content:
@@ -154,7 +154,7 @@ authenticationRoutes.post("/register", authentication_1.register);
  *   post:
  *     summary: Login registered users
  *     description: Authenticates user and returns a JWT token
- *     tags: [Authentication]
+ *     tags: [Authentication Controller]
  *     requestBody:
  *       required: true
  *       content:
@@ -199,7 +199,7 @@ authenticationRoutes.post("/login", authentication_1.login);
  *   get:
  *     summary: Retrieve user information
  *     description: Returns the information of a user. Requires authentication.
- *     tags: [Authentication]
+ *     tags: [Authentication Controller]
  *     schema:
  *        type: string
  *        example: Bearer your_token_here
@@ -238,7 +238,7 @@ authenticationRoutes.get("/get-user-info", authenticateJWT_1.default, authentica
  * /api/v1/authentication/update-user-profile:
  *   put:
  *     summary: Update user profile
- *     tags: [Authentication]
+ *     tags: [Authentication Controller]
  *     schema:
  *        type: string
  *        example: Bearer your_token_here
@@ -354,7 +354,7 @@ authenticationRoutes.put("/update-user-profile", authenticateJWT_1.default, auth
  * /api/v1/authentication/forgot-password:
  *   post:
  *     summary: Send a default password to the user's email address
- *     tags: [Authentication]
+ *     tags: [Authentication Controller]
  *     requestBody:
  *       required: true
  *       content:
@@ -413,7 +413,7 @@ authenticationRoutes.post("/forgot-password", authentication_1.forgotPassword);
  * /api/v1/authentication/change-password:
  *   post:
  *     summary: Change a user's password
- *     tags: [Authentication]
+ *     tags: [Authentication Controller]
  *     requestBody:
  *       required: true
  *       content:

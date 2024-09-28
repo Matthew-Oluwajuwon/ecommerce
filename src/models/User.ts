@@ -41,6 +41,10 @@ const userSchema = new Schema(
       type: String,
       trim: true,
     },
+    isApproved: {
+      type: Boolean,
+      default: false
+    },
     role_type: {
       type: String,
       enum: ["ADMIN", "MERCHANT", "USER"],

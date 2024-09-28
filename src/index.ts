@@ -7,12 +7,16 @@ import swaggerUi from "swagger-ui-express";
 import dotenv from "dotenv";
 import { swaggerSpec } from "./swagger-ui";
 import { io, server } from "./socket";
-import { authenticationRoutes } from "./routes";
+import { authenticationRoutes, productRoutes } from "./routes";
 
 // Load environment variables from .env file
 dotenv.config();
 
 const app = express();
+
+// Increase request body size limit
+app.use(express.json({ limit: '10mb' })); // Set the limit to 10MB
+app.use(express.urlencoded({ limit: '10mb', extended: true })); // For form submissions
 
 // Serve the Swagger docs through an endpoint
 app.use("/swagger/index.html", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -30,6 +34,7 @@ app.get("/", (_req: Request, res: Response) => {
 
 // Difference routes in the application
 app.use("/api/v1/authentication/", authenticationRoutes)
+app.use("/api/v1/product/", productRoutes)
 
 // Handle Socket.IO connection events
 io(app).on("connection", (socket) => {

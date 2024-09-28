@@ -28,9 +28,18 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    const token = jwt.sign({ id: user._id, email: user.email_address }, secretKey as string, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      {
+        id: user._id,
+        email: user.email_address,
+        role_type: user.role_type,
+        isApproved: user.isApproved,
+      },
+      secretKey as string,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     return res.status(200).json({
       responseCode: 200,
@@ -39,10 +48,10 @@ export const login = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     return res.status(500).json({
-        responseCode: 500,
-        responseMessage: "Internal server error",
-        error: error.message,
-        data: null,
-      });
+      responseCode: 500,
+      responseMessage: "Internal server error",
+      error: error.message,
+      data: null,
+    });
   }
 };

@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getProductById = exports.getAllProducts = exports.deleteProduct = exports.updateProduct = exports.createProduct = void 0;
+const getProductById_1 = require("./getProductById");
+Object.defineProperty(exports, "getProductById", { enumerable: true, get: function () { return getProductById_1.getProductById; } });
+const getaAllProducts_1 = require("./getaAllProducts");
+Object.defineProperty(exports, "getAllProducts", { enumerable: true, get: function () { return getaAllProducts_1.getAllProducts; } });
+const updateProduct_1 = require("./updateProduct");
+Object.defineProperty(exports, "updateProduct", { enumerable: true, get: function () { return updateProduct_1.updateProduct; } });
+const createProduct_1 = require("./createProduct");
+Object.defineProperty(exports, "createProduct", { enumerable: true, get: function () { return createProduct_1.createProduct; } });
+const deleteProduct_1 = require("./deleteProduct");
+Object.defineProperty(exports, "deleteProduct", { enumerable: true, get: function () { return deleteProduct_1.deleteProduct; } });
