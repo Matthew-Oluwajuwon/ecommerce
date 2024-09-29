@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateProduct = void 0;
 const joi_1 = __importDefault(require("joi"));
 const Product_1 = require("../../models/Product");
+const Category_1 = require("../../models/Category"); // Import the Category model
 const cloudinaryConfig_1 = __importDefault(require("../../utils/cloudinaryConfig"));
 // Update Product Controller
 const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -24,9 +25,7 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         productImage: joi_1.default.string().min(3).trim().optional(),
         productPrice: joi_1.default.number().min(0).optional(),
         productQuantity: joi_1.default.number().min(0).optional(),
-        productCategory: joi_1.default.string()
-            .valid("IPHONE_5_SERIES", "IPHONE_6_SERIES", "IPHONE_7_SERIES", "IPHONE_8_SERIES", "IPHONE_X_SERIES", "IPHONE_11_SERIES", "IPHONE_12_SERIES", "IPHONE_13_SERIES", "IPHONE_14_SERIES", "IPHONE_15_SERIES", "IPHONE_16_SERIES")
-            .optional(),
+        productCategoryId: joi_1.default.string().optional(), // Validate categoryId instead of enum
     });
     const { error } = schema.validate(req.body);
     if (error) {
@@ -60,8 +59,19 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 data: null,
             });
         }
-        // Update product details
         const updateData = Object.assign({}, req.body);
+        // Check if productCategoryId is provided and fetch the corresponding category
+        if (req.body.productCategoryId) {
+            const category = yield Category_1.Category.findById(req.body.productCategoryId);
+            if (!category) {
+                return res.status(400).json({
+                    responseCode: 400,
+                    responseMessage: "Invalid category ID.",
+                    data: null,
+                });
+            }
+            updateData.productCategory = category._id; // Set productCategory to the category's ObjectId
+        }
         // Check if a new image is uploaded, and upload to Cloudinary
         if (req.body.productImage) {
             let uploadResult;
@@ -79,11 +89,11 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             }
         }
         // Update the product document
-        yield Product_1.Product.findByIdAndUpdate(id, updateData, { new: true });
+        const updatedProduct = yield Product_1.Product.findByIdAndUpdate(id, updateData, { new: true }).populate('productCategory'); // Populate category
         return res.status(200).json({
             responseCode: 200,
             responseMessage: "Product updated successfully",
-            data: updateData,
+            data: updatedProduct,
         });
     }
     catch (err) {

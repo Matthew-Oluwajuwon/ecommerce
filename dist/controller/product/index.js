@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductById = exports.getAllProducts = exports.deleteProduct = exports.updateProduct = exports.createProduct = void 0;
+exports.getAllSubCategoryByCategoryId = exports.getAllSubCategories = exports.getAllCategories = exports.getProductById = exports.getAllProducts = exports.deleteProduct = exports.updateProduct = exports.createProduct = void 0;
+const getAllSubCategory_1 = require("./getAllSubCategory");
+Object.defineProperty(exports, "getAllSubCategories", { enumerable: true, get: function () { return getAllSubCategory_1.getAllSubCategories; } });
+const getAllCategories_1 = require("./getAllCategories");
+Object.defineProperty(exports, "getAllCategories", { enumerable: true, get: function () { return getAllCategories_1.getAllCategories; } });
 const getProductById_1 = require("./getProductById");
 Object.defineProperty(exports, "getProductById", { enumerable: true, get: function () { return getProductById_1.getProductById; } });
 const getaAllProducts_1 = require("./getaAllProducts");
@@ -11,3 +15,5 @@ const createProduct_1 = require("./createProduct");
 Object.defineProperty(exports, "createProduct", { enumerable: true, get: function () { return createProduct_1.createProduct; } });
 const deleteProduct_1 = require("./deleteProduct");
 Object.defineProperty(exports, "deleteProduct", { enumerable: true, get: function () { return deleteProduct_1.deleteProduct; } });
+const getAllSubCategoryByCategoryId_1 = require("./getAllSubCategoryByCategoryId");
+Object.defineProperty(exports, "getAllSubCategoryByCategoryId", { enumerable: true, get: function () { return getAllSubCategoryByCategoryId_1.getAllSubCategoryByCategoryId; } });

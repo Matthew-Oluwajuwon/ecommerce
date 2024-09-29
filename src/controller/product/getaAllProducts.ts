@@ -15,7 +15,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
     // Fetch products with pagination
     const products = await Product.find()
       .skip(skip)
-      .limit(size).select("-__v");
+      .limit(size).select("-_v");
 
     // Get total product count for pagination info
     const totalProducts = await Product.countDocuments();

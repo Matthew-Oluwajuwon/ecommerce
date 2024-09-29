@@ -1,32 +1,20 @@
 import { Response } from "express";
 import Joi from "joi";
 import { Product } from "../../models/Product";
+import { Category } from "../../models/Category"; // Import the Category model
 import cloudinary from "../../utils/cloudinaryConfig";
 import { User } from "../../models/User";  // Assuming you have a User model for checking role_type and isApproved
 
 // Create Product Controller
 export const createProduct = async (req: any, res: Response) => {
+  // Updated Joi schema to validate categoryId instead of enum strings
   const schema = Joi.object({
     productName: Joi.string().min(3).trim().required(),
     productDescription: Joi.string().min(3).trim().required(),
     productImage: Joi.string().min(3).trim().required(),
     productPrice: Joi.number().min(0).required(),
     productQuantity: Joi.number().min(0).required(),
-    productCategory: Joi.string()
-      .valid(
-        "IPHONE_5_SERIES",
-        "IPHONE_6_SERIES",
-        "IPHONE_7_SERIES",
-        "IPHONE_8_SERIES",
-        "IPHONE_X_SERIES",
-        "IPHONE_11_SERIES",
-        "IPHONE_12_SERIES",
-        "IPHONE_13_SERIES",
-        "IPHONE_14_SERIES",
-        "IPHONE_15_SERIES",
-        "IPHONE_16_SERIES"
-      )
-      .required(),
+    productCategoryId: Joi.string().required(),  // Validate category ID instead of a string enum
   });
 
   const { error } = schema.validate(req.body);
@@ -64,6 +52,16 @@ export const createProduct = async (req: any, res: Response) => {
       });
     }
 
+    // Fetch the category using the provided productCategoryId
+    const category = await Category.findById(req.body.productCategoryId);
+    if (!category) {
+      return res.status(400).json({
+        responseCode: 400,
+        responseMessage: "Invalid category ID.",
+        data: null,
+      });
+    }
+
     // Upload the image to Cloudinary
     let uploadResult: any;
 
@@ -82,13 +80,16 @@ export const createProduct = async (req: any, res: Response) => {
     const product = new Product({
       ...req.body,
       productImage: uploadResult.secure_url,
+      productCategory: category._id,  // Set productCategory to the category's ObjectId
       user: user.id,
     });
 
     await product.save();
 
-    // Populate the user field with user details
-    const populatedProduct = await Product.findById(product._id).populate('user', '-password'); // Exclude sensitive fields like password
+    // Populate the user and productCategory fields
+    const populatedProduct = await Product.findById(product._id)
+      .populate('user', '-password')  // Exclude sensitive fields like password
+      .populate('productCategory');   // Populate the productCategory field
 
     return res.status(201).json({
       responseCode: 201,

@@ -15,18 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createProduct = void 0;
 const joi_1 = __importDefault(require("joi"));
 const Product_1 = require("../../models/Product");
+const Category_1 = require("../../models/Category"); // Import the Category model
 const cloudinaryConfig_1 = __importDefault(require("../../utils/cloudinaryConfig"));
 // Create Product Controller
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Updated Joi schema to validate categoryId instead of enum strings
     const schema = joi_1.default.object({
         productName: joi_1.default.string().min(3).trim().required(),
         productDescription: joi_1.default.string().min(3).trim().required(),
         productImage: joi_1.default.string().min(3).trim().required(),
         productPrice: joi_1.default.number().min(0).required(),
         productQuantity: joi_1.default.number().min(0).required(),
-        productCategory: joi_1.default.string()
-            .valid("IPHONE_5_SERIES", "IPHONE_6_SERIES", "IPHONE_7_SERIES", "IPHONE_8_SERIES", "IPHONE_X_SERIES", "IPHONE_11_SERIES", "IPHONE_12_SERIES", "IPHONE_13_SERIES", "IPHONE_14_SERIES", "IPHONE_15_SERIES", "IPHONE_16_SERIES")
-            .required(),
+        productCategoryId: joi_1.default.string().required(), // Validate category ID instead of a string enum
     });
     const { error } = schema.validate(req.body);
     if (error) {
@@ -59,6 +59,15 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 data: null,
             });
         }
+        // Fetch the category using the provided productCategoryId
+        const category = yield Category_1.Category.findById(req.body.productCategoryId);
+        if (!category) {
+            return res.status(400).json({
+                responseCode: 400,
+                responseMessage: "Invalid category ID.",
+                data: null,
+            });
+        }
         // Upload the image to Cloudinary
         let uploadResult;
         try {
@@ -73,10 +82,12 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 data: null,
             });
         }
-        const product = new Product_1.Product(Object.assign(Object.assign({}, req.body), { productImage: uploadResult.secure_url, user: user.id }));
+        const product = new Product_1.Product(Object.assign(Object.assign({}, req.body), { productImage: uploadResult.secure_url, productCategory: category._id, user: user.id }));
         yield product.save();
-        // Populate the user field with user details
-        const populatedProduct = yield Product_1.Product.findById(product._id).populate('user', '-password'); // Exclude sensitive fields like password
+        // Populate the user and productCategory fields
+        const populatedProduct = yield Product_1.Product.findById(product._id)
+            .populate('user', '-password') // Exclude sensitive fields like password
+            .populate('productCategory'); // Populate the productCategory field
         return res.status(201).json({
             responseCode: 201,
             responseMessage: "Product created successfully",

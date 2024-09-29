@@ -39,21 +39,8 @@ const productSchema = new Schema({
         required: true,
     },
     productCategory: {
-        type: String,
-        trim: true,
-        enum: [
-            "IPHONE_5_SERIES",
-            "IPHONE_6_SERIES",
-            "IPHONE_7_SERIES",
-            "IPHONE_8_SERIES",
-            "IPHONE_X_SERIES",
-            "IPHONE_11_SERIES",
-            "IPHONE_12_SERIES",
-            "IPHONE_13_SERIES",
-            "IPHONE_14_SERIES",
-            "IPHONE_15_SERIES",
-            "IPHONE_16_SERIES",
-        ],
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Category", // Reference to the Category model
         required: true,
     },
     user: {

@@ -15,6 +15,238 @@ const productRoutes = (0, express_1.Router)();
  */
 /**
  * @swagger
+ * /api/v1/product/categories:
+ *   get:
+ *     summary: Retrieve all product categories with pagination
+ *     tags: [Product Controller]
+ *     schema:
+ *        type: string
+ *        example: Bearer your_token_here
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         description: The page number to retrieve (default is 1)
+ *       - in: query
+ *         name: size
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *         description: Number of categories to retrieve per page (default is 10, max is 100)
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved categories
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 200
+ *                 responseMessage:
+ *                   type: string
+ *                   example: Categories retrieved successfully
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     categories:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         description: Category details
+ *                     pagination:
+ *                       type: object
+ *                       properties:
+ *                         totalCategories:
+ *                           type: integer
+ *                           example: 50
+ *                         currentPage:
+ *                           type: integer
+ *                           example: 1
+ *                         pageSize:
+ *                           type: integer
+ *                           example: 10
+ *                         totalPages:
+ *                           type: integer
+ *                           example: 5
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 500
+ *                 responseMessage:
+ *                   type: string
+ *                   example: Internal server error
+ */
+productRoutes.get("/categories", authenticateJWT_1.default, product_1.getAllCategories);
+/**
+ * @swagger
+ * /api/v1/product/sub-category:
+ *   get:
+ *     summary: Get all sub-categories
+ *     tags: [Product Controller]
+ *     schema:
+ *        type: string
+ *        example: Bearer your_token_here
+ *     responses:
+ *       200:
+ *         description: Sub-categories fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 200
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "Sub-categories fetched successfully"
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "60a6c482f60b3d001c8e8a5e"
+ *                       subCategoryName:
+ *                         type: string
+ *                         example: "Smartphones"
+ *                       category:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             example: "60a6c482f60b3d001c8e8a5f"
+ *                           categoryName:
+ *                             type: string
+ *                             example: "Electronics"
+ *                       createdAt:
+ *                         type: string
+ *                         example: "2024-01-01T12:00:00.000Z"
+ *                       updatedAt:
+ *                         type: string
+ *                         example: "2024-01-01T12:00:00.000Z"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 500
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ *                 data:
+ *                   type: string
+ *                   example: null
+ */
+productRoutes.get("/sub-category", product_1.getAllSubCategories);
+/**
+ * @swagger
+ * /api/v1/product/sub-category/{categoryId}:
+ *   get:
+ *     summary: Get sub-categories by category ID
+ *     tags: [Product Controller]
+ *     schema:
+ *        type: string
+ *        example: Bearer your_token_here
+ *     parameters:
+ *       - name: categoryId
+ *         in: path
+ *         required: true
+ *         description: The ID of the category to fetch sub-categories for
+ *         schema:
+ *           type: string
+ *           example: "60a6c482f60b3d001c8e8a5f"
+ *     responses:
+ *       200:
+ *         description: Sub-categories fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 200
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "Sub-categories fetched successfully"
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "60a6c482f60b3d001c8e8a5e"
+ *                       subCategoryName:
+ *                         type: string
+ *                         example: "Smartphones"
+ *                       category:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             example: "60a6c482f60b3d001c8e8a5f"
+ *                           categoryName:
+ *                             type: string
+ *                             example: "Electronics"
+ *                       createdAt:
+ *                         type: string
+ *                         example: "2024-01-01T12:00:00.000Z"
+ *                       updatedAt:
+ *                         type: string
+ *                         example: "2024-01-01T12:00:00.000Z"
+ *       404:
+ *         description: No sub-categories found for this category
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 404
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "No sub-categories found for this category"
+ *                 data:
+ *                   type: string
+ *                   example: null
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 500
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "Internal Server Error"
+ *                 data:
+ *                   type: string
+ *                   example: null
+ */
+productRoutes.get("/sub-category/:categoryId", product_1.getAllSubCategoryByCategoryId);
+/**
+ * @swagger
  * /api/v1/product:
  *   get:
  *     summary: Get all products with pagination
@@ -130,21 +362,9 @@ productRoutes.get("/:id", authenticateJWT_1.default, product_1.getProductById);
  *               productQuantity:
  *                 type: number
  *                 example: 10
- *               productCategory:
+ *               productCategoryId:
  *                 type: string
- *                 enum:
- *                   - IPHONE_5_SERIES
- *                   - IPHONE_6_SERIES
- *                   - IPHONE_7_SERIES
- *                   - IPHONE_8_SERIES
- *                   - IPHONE_X_SERIES
- *                   - IPHONE_11_SERIES
- *                   - IPHONE_12_SERIES
- *                   - IPHONE_13_SERIES
- *                   - IPHONE_14_SERIES
- *                   - IPHONE_15_SERIES
- *                   - IPHONE_16_SERIES
- *                 example: "IPHONE_14_SERIES"
+ *                 example: "66f930e0c8db616092cec85c"
  *     responses:
  *       201:
  *         description: Product created successfully
@@ -261,9 +481,9 @@ productRoutes.post("/", authenticateJWT_1.default, product_1.createProduct);
  *               productQuantity:
  *                 type: number
  *                 example: 50
- *               productCategory:
+ *               productCategoryId:
  *                 type: string
- *                 example: "IPHONE_12_SERIES"
+ *                 example: "66f930e0c8db616092cec85c"
  *     responses:
  *       200:
  *         description: Product updated successfully
