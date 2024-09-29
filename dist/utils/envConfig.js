@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.emailUser = exports.emailPassword = exports.secretKey = exports.connectionString = exports.port = void 0;
+exports.paystackApiUrl = exports.paystackSecretKey = exports.emailUser = exports.emailPassword = exports.secretKey = exports.connectionString = exports.port = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const port = process.env.PORT;
@@ -16,3 +16,7 @@ const emailUser = process.env.EMAIL_USER;
 exports.emailUser = emailUser;
 const emailPassword = process.env.EMAIL_PASSWORD;
 exports.emailPassword = emailPassword;
+const paystackSecretKey = process.env.PAYSTACK_SECRET_KEY;
+exports.paystackSecretKey = paystackSecretKey;
+const paystackApiUrl = process.env.PAYSTACK_API_BASE_URL;
+exports.paystackApiUrl = paystackApiUrl;

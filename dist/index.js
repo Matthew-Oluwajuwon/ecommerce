@@ -12,14 +12,12 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const swagger_ui_1 = require("./swagger-ui");
 const socket_1 = require("./socket");
 const routes_1 = require("./routes");
-const merchantProduct_1 = __importDefault(require("./routes/merchantProduct"));
-const cart_1 = __importDefault(require("./routes/cart"));
 // Load environment variables from .env file
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 // Increase request body size limit
-app.use(express_1.default.json({ limit: '10mb' })); // Set the limit to 10MB
-app.use(express_1.default.urlencoded({ limit: '10mb', extended: true })); // For form submissions
+app.use(express_1.default.json({ limit: "10mb" })); // Set the limit to 10MB
+app.use(express_1.default.urlencoded({ limit: "10mb", extended: true })); // For form submissions
 // Serve the Swagger docs through an endpoint
 app.use("/swagger/index.html", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_ui_1.swaggerSpec));
 // Enable Cross-Origin Resource Sharing (CORS) for all requests
@@ -33,8 +31,9 @@ app.get("/", (_req, res) => {
 // Difference routes in the application
 app.use("/api/v1/authentication/", routes_1.authenticationRoutes);
 app.use("/api/v1/product/", routes_1.productRoutes);
-app.use("/api/v1/merchant-product/", merchantProduct_1.default);
-app.use("/api/v1/cart/", cart_1.default);
+app.use("/api/v1/merchant-product/", routes_1.merchantProductRoutes);
+app.use("/api/v1/cart/", routes_1.cartRoutes);
+app.use("/api/v1/order/", routes_1.orderRoutes);
 // Handle Socket.IO connection events
 (0, socket_1.io)(app).on("connection", (socket) => {
     console.log("A user connected:", socket.id); // Log user connections by socket ID
