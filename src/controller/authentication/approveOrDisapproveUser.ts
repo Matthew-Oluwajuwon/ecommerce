@@ -42,7 +42,7 @@ export const approveOrDisapproveUser = async (req: any, res: Response) => {
       });
     }
 
-    user.isApproved = status === "APPROVED"; // Toggle isApproved based on status
+    user.is_approved = status === "APPROVED"; // Toggle isApproved based on status
 
     await user.save();
 

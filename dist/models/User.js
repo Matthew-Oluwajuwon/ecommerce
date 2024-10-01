@@ -7,12 +7,12 @@ exports.User = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
 const userSchema = new Schema({
-    firstName: {
+    first_name: {
         type: String,
         min: 3,
         trim: true,
     },
-    lastName: {
+    last_name: {
         type: String,
         min: 3,
         trim: true,
@@ -44,7 +44,11 @@ const userSchema = new Schema({
         type: String,
         trim: true,
     },
-    isApproved: {
+    is_approved: {
+        type: Boolean,
+        default: false
+    },
+    is_default_password: {
         type: Boolean,
         default: false
     },

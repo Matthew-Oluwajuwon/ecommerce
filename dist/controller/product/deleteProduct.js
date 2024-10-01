@@ -22,7 +22,7 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         // Check if the user is an admin
         if (user.role_type !== "ADMIN") {
             // If the user is not an admin, check if they are a merchant and approved
-            if (user.role_type !== "MERCHANT" || !user.isApproved) {
+            if (user.role_type !== "MERCHANT" || !user.is_approved) {
                 return res.status(403).json({
                     responseCode: 403,
                     responseMessage: "Only approved merchants or admin users can delete products.",

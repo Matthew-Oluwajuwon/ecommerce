@@ -47,7 +47,7 @@ const approveOrDisapproveUser = (req, res) => __awaiter(void 0, void 0, void 0, 
                 data: null,
             });
         }
-        user.isApproved = status === "APPROVED"; // Toggle isApproved based on status
+        user.is_approved = status === "APPROVED"; // Toggle isApproved based on status
         yield user.save();
         return res.status(200).json({
             responseCode: 200,

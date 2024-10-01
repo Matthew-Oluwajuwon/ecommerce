@@ -54,7 +54,8 @@ export const login = async (req: Request, res: Response) => {
         id: user._id,
         email_address: user.email_address,
         role_type: user.role_type,
-        isApproved: user.isApproved,
+        is_approved: user.is_approved,
+        is_default_password: user.is_default_password
       },
       secretKey as string,
       {
@@ -65,6 +66,7 @@ export const login = async (req: Request, res: Response) => {
     return res.status(200).json({
       responseCode: 200,
       responseMessage: "Login successfully",
+      is_default_password: user.is_default_password,
       token,
     });
   } catch (error: any) {

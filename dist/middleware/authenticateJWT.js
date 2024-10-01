@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const envConfig_1 = require("../utils/envConfig");
+const jwt_decode_1 = require("jwt-decode");
 // Middleware to validate JWT token
 const authenticateJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -19,6 +20,14 @@ const authenticateJWT = (req, res, next) => {
                 });
             }
             // Token is valid, store user info for further use
+            const decoded = (0, jwt_decode_1.jwtDecode)(token);
+            if (decoded.is_default_password) {
+                return res.status(403).json({
+                    responseCode: 403,
+                    responseMessage: "You need to change your password as you cannot use a default password to proceed.",
+                    data: null,
+                });
+            }
             req.user = user;
             next();
         });

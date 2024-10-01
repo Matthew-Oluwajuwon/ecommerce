@@ -62,13 +62,15 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             id: user._id,
             email_address: user.email_address,
             role_type: user.role_type,
-            isApproved: user.isApproved,
+            is_approved: user.is_approved,
+            is_default_password: user.is_default_password
         }, envConfig_1.secretKey, {
             expiresIn: "1h",
         });
         return res.status(200).json({
             responseCode: 200,
             responseMessage: "Login successfully",
+            is_default_password: user.is_default_password,
             token,
         });
     }

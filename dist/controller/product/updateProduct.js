@@ -17,6 +17,7 @@ const joi_1 = __importDefault(require("joi"));
 const Product_1 = require("../../models/Product");
 const Category_1 = require("../../models/Category"); // Import the Category model
 const cloudinaryConfig_1 = __importDefault(require("../../utils/cloudinaryConfig"));
+const SubCategory_1 = require("../../models/SubCategory");
 // Update Product Controller
 const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const schema = joi_1.default.object({
@@ -25,7 +26,8 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         productImage: joi_1.default.string().min(3).trim().optional(),
         productPrice: joi_1.default.number().min(0).optional(),
         productQuantity: joi_1.default.number().min(0).optional(),
-        productCategoryId: joi_1.default.string().optional(), // Validate categoryId instead of enum
+        productCategoryId: joi_1.default.string().optional(),
+        productSubCategoryId: joi_1.default.string().required(),
     });
     const { error } = schema.validate(req.body);
     if (error) {
@@ -42,7 +44,7 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         // Check if the user is an admin
         if (user.role_type !== "ADMIN") {
             // If the user is not an admin, check if they are a merchant and approved
-            if (user.role_type !== "MERCHANT" || !user.isApproved) {
+            if (user.role_type !== "MERCHANT" || !user.is_approved) {
                 return res.status(403).json({
                     responseCode: 403,
                     responseMessage: "Only approved merchants or admin users can update products.",
@@ -71,6 +73,23 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 });
             }
             updateData.productCategory = category._id; // Set productCategory to the category's ObjectId
+        }
+        // Fetch the subcategory using the provided productSubCategoryId
+        const subCategory = yield SubCategory_1.SubCategory.findById(req.body.productSubCategoryId);
+        if (!subCategory) {
+            return res.status(400).json({
+                responseCode: 400,
+                responseMessage: "Invalid subcategory ID.",
+                data: null,
+            });
+        }
+        // Check if the category exists in the subcategory
+        if (subCategory.category.toString() !== req.body.productCategoryId) {
+            return res.status(400).json({
+                responseCode: 400,
+                responseMessage: "The provided category does not match the subcategory.",
+                data: null,
+            });
         }
         // Check if a new image is uploaded, and upload to Cloudinary
         if (req.body.productImage) {

@@ -32,10 +32,10 @@ const authenticationRoutes = Router();
  *           schema:
  *             type: object
  *             properties:
- *               firstName:
+ *               first_name:
  *                 type: string
  *                 example: "John"
- *               lastName:
+ *               last_name:
  *                 type: string
  *                 example: "Doe"
  *               phone_number:
@@ -80,10 +80,10 @@ const authenticationRoutes = Router();
  *                     email_address:
  *                       type: string
  *                       example: "example@gmail.com"
- *                     firstName:
+ *                     first_name:
  *                       type: string
  *                       example: "John"
- *                     lastName:
+ *                     last_name:
  *                       type: string
  *                       example: "Doe"
  *                     phone_number:
@@ -261,10 +261,10 @@ authenticationRoutes.get("/get-user-info", authenticateJWT, getUserInfo);
  *           schema:
  *             type: object
  *             properties:
- *               firstName:
+ *               first_name:
  *                 type: string
  *                 example: "John"
- *               lastName:
+ *               last_name:
  *                 type: string
  *                 example: "Doe"
  *               phone_number:
@@ -296,10 +296,10 @@ authenticationRoutes.get("/get-user-info", authenticateJWT, getUserInfo);
  *                     email_address:
  *                       type: string
  *                       example: "example@gmail.com"
- *                     firstName:
+ *                     first_name:
  *                       type: string
  *                       example: "John"
- *                     lastName:
+ *                     last_name:
  *                       type: string
  *                       example: "Doe"
  *                     phone_number:

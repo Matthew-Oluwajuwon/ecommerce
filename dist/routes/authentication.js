@@ -26,10 +26,10 @@ const authenticationRoutes = (0, express_1.Router)();
  *           schema:
  *             type: object
  *             properties:
- *               firstName:
+ *               first_name:
  *                 type: string
  *                 example: "John"
- *               lastName:
+ *               last_name:
  *                 type: string
  *                 example: "Doe"
  *               phone_number:
@@ -74,10 +74,10 @@ const authenticationRoutes = (0, express_1.Router)();
  *                     email_address:
  *                       type: string
  *                       example: "example@gmail.com"
- *                     firstName:
+ *                     first_name:
  *                       type: string
  *                       example: "John"
- *                     lastName:
+ *                     last_name:
  *                       type: string
  *                       example: "Doe"
  *                     phone_number:
@@ -251,10 +251,10 @@ authenticationRoutes.get("/get-user-info", authenticateJWT_1.default, authentica
  *           schema:
  *             type: object
  *             properties:
- *               firstName:
+ *               first_name:
  *                 type: string
  *                 example: "John"
- *               lastName:
+ *               last_name:
  *                 type: string
  *                 example: "Doe"
  *               phone_number:
@@ -286,10 +286,10 @@ authenticationRoutes.get("/get-user-info", authenticateJWT_1.default, authentica
  *                     email_address:
  *                       type: string
  *                       example: "example@gmail.com"
- *                     firstName:
+ *                     first_name:
  *                       type: string
  *                       example: "John"
- *                     lastName:
+ *                     last_name:
  *                       type: string
  *                       example: "Doe"
  *                     phone_number:

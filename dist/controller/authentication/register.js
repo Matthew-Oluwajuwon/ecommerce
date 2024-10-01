@@ -18,15 +18,14 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const cloudinaryConfig_1 = __importDefault(require("../../utils/cloudinaryConfig"));
 const User_1 = require("../../models/User"); // Assuming you have a User model for MongoDB
 const envConfig_1 = require("../../utils/envConfig");
-const sendMail_1 = require("../../middleware/sendMail");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     // Define the validation schema using Joi
     const schema = joi_1.default.object({
-        firstName: joi_1.default.string().min(3).optional().messages({
+        first_name: joi_1.default.string().min(3).optional().messages({
             "string.min": "First name must be at least 3 characters long",
         }),
-        lastName: joi_1.default.string().min(3).optional().messages({
+        last_name: joi_1.default.string().min(3).optional().messages({
             "string.min": "Last name must be at least 3 characters long",
         }),
         phone_number: joi_1.default.string().min(10).optional().messages({
@@ -58,7 +57,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             data: null,
         });
     }
-    const { email_address, password, role_type, firstName, lastName, phone_number, home_address, profile_image, } = req.body;
+    const { email_address, password, role_type, first_name, last_name, phone_number, home_address, profile_image, } = req.body;
     try {
         // Check if the user already exists
         const existingUser = yield User_1.User.findOne({ email_address });
@@ -93,12 +92,13 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             email_address,
             password: hashedPassword,
             role_type,
-            firstName, // Optional fields
-            lastName, // Optional fields
+            first_name, // Optional fields
+            last_name, // Optional fields
             phone_number, // Optional fields
             home_address, // Optional fields
             profile_image: uploadResult ? uploadResult.secure_url : null, // Assign uploaded image URL
-            isApproved: role_type === "ADMIN"
+            isApproved: role_type === "ADMIN",
+            is_default_password: false
         });
         // Save the user to the database
         yield newUser.save();
@@ -107,7 +107,6 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         envConfig_1.secretKey, // Secret key
         { expiresIn: "1h" } // Token expiration
         );
-        yield (0, sendMail_1.sendEmail)(email_address, "Welcome!, Registration successful", `Welcome ${email_address}`, "You  have been onboarded successfully");
         // Send the response
         return res.status(201).json({
             responseCode: 201,
@@ -115,13 +114,14 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             data: {
                 email_address: newUser.email_address,
                 role_type: newUser.role_type,
-                firstName: newUser.firstName,
-                lastName: newUser.lastName,
+                first_name: newUser.first_name,
+                last_name: newUser.last_name,
                 phone_number: newUser.phone_number,
                 home_address: newUser.home_address,
                 profile_image: newUser.profile_image,
                 created_at: newUser.createdAt,
-                isApproved: newUser.isApproved,
+                is_approved: newUser.is_approved,
+                is_default_password: false,
                 token,
             },
         });

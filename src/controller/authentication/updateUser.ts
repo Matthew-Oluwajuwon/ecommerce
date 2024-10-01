@@ -8,8 +8,8 @@ export const updateUser = async (req: any, res: Response) => {
     const userId = req.user.id;
   // Define the validation schema for user profile update
   const schema = Joi.object({
-    firstName: Joi.string().min(3).optional(),
-    lastName: Joi.string().min(3).optional(),
+    first_name: Joi.string().min(3).optional(),
+    last_name: Joi.string().min(3).optional(),
     phone_number: Joi.string().min(10).optional(),
     home_address: Joi.string().min(3).optional(),
     profile_image: Joi.string().optional(), // base64 string
@@ -27,7 +27,7 @@ export const updateUser = async (req: any, res: Response) => {
   }
 
   try {
-    const { firstName, lastName, phone_number, home_address, profile_image } = req.body;
+    const { first_name, last_name, phone_number, home_address, profile_image } = req.body;
 
     // Find the user (assuming you're identifying by email or use req.user for authenticated users)
     const user = await User.findById(userId);
@@ -54,8 +54,8 @@ export const updateUser = async (req: any, res: Response) => {
     }
 
     // Update user details
-    if (firstName) user.firstName = firstName;
-    if (lastName) user.lastName = lastName;
+    if (first_name) user.first_name = first_name;
+    if (last_name) user.last_name = last_name;
     if (phone_number) user.phone_number = phone_number;
     if (home_address) user.home_address = home_address;
     if (uploadResult) user.profile_image = uploadResult.secure_url;
@@ -68,8 +68,8 @@ export const updateUser = async (req: any, res: Response) => {
       responseMessage: "User profile updated successfully",
       data: {
         email_address: user.email_address,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        first_name: user.first_name,
+        last_name: user.last_name,
         phone_number: user.phone_number,
         home_address: user.home_address,
         profile_image: user.profile_image,

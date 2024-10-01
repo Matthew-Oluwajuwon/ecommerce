@@ -35,10 +35,14 @@ const orderRoutes = Router();
  *           schema:
  *             type: object
  *             properties:
- *               userId:
+ *               isHomeAddress:
+ *                 type: boolean
+ *                 description: If user wants to use home address
+ *                 example: false
+ *               callback_url:
  *                 type: string
- *                 description: ID of the user placing the order.
- *                 example: "60c72b2f9b1d8e001c8d4b32"
+ *                 description: The frontend URL you want the user to be returned to after payment
+ *                 example: https://frontend-url.com/
  *               shippingAddress:
  *                 type: object
  *                 description: Shipping address for the order.

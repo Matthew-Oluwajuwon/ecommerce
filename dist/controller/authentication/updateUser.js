@@ -21,8 +21,8 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const userId = req.user.id;
     // Define the validation schema for user profile update
     const schema = joi_1.default.object({
-        firstName: joi_1.default.string().min(3).optional(),
-        lastName: joi_1.default.string().min(3).optional(),
+        first_name: joi_1.default.string().min(3).optional(),
+        last_name: joi_1.default.string().min(3).optional(),
         phone_number: joi_1.default.string().min(10).optional(),
         home_address: joi_1.default.string().min(3).optional(),
         profile_image: joi_1.default.string().optional(), // base64 string
@@ -38,7 +38,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
     try {
-        const { firstName, lastName, phone_number, home_address, profile_image } = req.body;
+        const { first_name, last_name, phone_number, home_address, profile_image } = req.body;
         // Find the user (assuming you're identifying by email or use req.user for authenticated users)
         const user = yield User_1.User.findById(userId);
         if (!user) {
@@ -63,10 +63,10 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             }
         }
         // Update user details
-        if (firstName)
-            user.firstName = firstName;
-        if (lastName)
-            user.lastName = lastName;
+        if (first_name)
+            user.first_name = first_name;
+        if (last_name)
+            user.last_name = last_name;
         if (phone_number)
             user.phone_number = phone_number;
         if (home_address)
@@ -80,8 +80,8 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             responseMessage: "User profile updated successfully",
             data: {
                 email_address: user.email_address,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                first_name: user.first_name,
+                last_name: user.last_name,
                 phone_number: user.phone_number,
                 home_address: user.home_address,
                 profile_image: user.profile_image,

@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    firstName: {
+    first_name: {
       type: String,
       min: 3,
       trim: true,
     },
-    lastName: {
+    last_name: {
       type: String,
       min: 3,
       trim: true,
@@ -41,7 +41,11 @@ const userSchema = new Schema(
       type: String,
       trim: true,
     },
-    isApproved: {
+    is_approved: {
+      type: Boolean,
+      default: false
+    },
+    is_default_password: {
       type: Boolean,
       default: false
     },

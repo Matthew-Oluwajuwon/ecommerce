@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { generateRandomPassword } from "../../utils/randomPassword";
 import { User } from "../../models/User";
-import { sendEmail } from "../../middleware/sendMail";
+// import { sendEmail } from "../../middleware/sendMail";
 import Joi from "joi";
 import bcrypt from "bcryptjs"; // Make sure to install bcryptjs
 
@@ -39,20 +39,23 @@ export const forgotPassword = async (req: Request, res: Response) => {
     // Hash the new password before saving
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword; // Update the user's password with the hashed password
+    user.is_default_password = true
     await user.save();
 
     // Send email to user with the new password
-    await sendEmail(
-      user.email_address,
-      "FORGOT PASSWORD",
-      "Here's your default password",
-      `Your new default password is: ${newPassword}`
-    );
+    // await sendEmail(
+    //   user.email_address,
+    //   "FORGOT PASSWORD",
+    //   "Here's your default password",
+    //   `Your new default password is: ${newPassword}`
+    // );
 
     return res.status(200).json({
       responseCode: 200,
       responseMessage: `A default password has been sent to ${user.email_address}`,
-      data: null,
+      data: {
+        default_password: newPassword
+      },
     });
   } catch (error) {
     console.error("Error sending email:", error);

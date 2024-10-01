@@ -55,6 +55,7 @@ const changePassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
         // Hash the new password
         const hashedNewPassword = yield bcryptjs_1.default.hash(new_password, 10);
         user.password = hashedNewPassword; // Update the user's password
+        user.is_default_password = false;
         yield user.save();
         return res.status(200).json({
             responseCode: 200,

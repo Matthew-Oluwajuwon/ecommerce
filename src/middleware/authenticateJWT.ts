@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Response, NextFunction } from "express";
 import { secretKey } from "../utils/envConfig";
+import { jwtDecode } from "jwt-decode";
 
 // Middleware to validate JWT token
 const authenticateJWT = (req: any, res: Response, next: NextFunction) => {
@@ -19,6 +20,15 @@ const authenticateJWT = (req: any, res: Response, next: NextFunction) => {
       }
 
       // Token is valid, store user info for further use
+      const decoded: any = jwtDecode(token);
+
+      if (decoded.is_default_password) {
+        return res.status(403).json({
+          responseCode: 403,
+          responseMessage: "You need to change your password as you cannot use a default password to proceed.",
+          data: null,
+        });
+      }
       req.user = user;
       next();
     });

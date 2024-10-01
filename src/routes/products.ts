@@ -378,6 +378,9 @@ productRoutes.get("/:id", authenticateJWT, getProductById);
  *               productCategoryId:
  *                 type: string
  *                 example: "66f930e0c8db616092cec85c"
+ *               productSubCategoryId:
+ *                 type: string
+ *                 example: "66f930e0c8db616092cec85c"
  *     responses:
  *       201:
  *         description: Product created successfully
@@ -496,6 +499,9 @@ productRoutes.post("/", authenticateJWT, createProduct);
  *                 type: number
  *                 example: 50
  *               productCategoryId:
+ *                 type: string
+ *                 example: "66f930e0c8db616092cec85c"
+ *               productSubCategoryId:
  *                 type: string
  *                 example: "66f930e0c8db616092cec85c"
  *     responses:

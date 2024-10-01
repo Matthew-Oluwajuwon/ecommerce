@@ -3,6 +3,7 @@ import Joi from "joi";
 import { Product } from "../../models/Product";
 import { Category } from "../../models/Category";  // Import the Category model
 import cloudinary from "../../utils/cloudinaryConfig";
+import { SubCategory } from "../../models/SubCategory";
 
 // Update Product Controller
 export const updateProduct = async (req: any, res: Response) => {
@@ -12,7 +13,8 @@ export const updateProduct = async (req: any, res: Response) => {
     productImage: Joi.string().min(3).trim().optional(),
     productPrice: Joi.number().min(0).optional(),
     productQuantity: Joi.number().min(0).optional(),
-    productCategoryId: Joi.string().optional(),  // Validate categoryId instead of enum
+    productCategoryId: Joi.string().optional(),
+    productSubCategoryId: Joi.string().required(),
   });
 
   const { error } = schema.validate(req.body);
@@ -33,7 +35,7 @@ export const updateProduct = async (req: any, res: Response) => {
     // Check if the user is an admin
     if (user.role_type !== "ADMIN") {
       // If the user is not an admin, check if they are a merchant and approved
-      if (user.role_type !== "MERCHANT" || !user.isApproved) {
+      if (user.role_type !== "MERCHANT" || !user.is_approved) {
         return res.status(403).json({
           responseCode: 403,
           responseMessage: "Only approved merchants or admin users can update products.",
@@ -65,6 +67,25 @@ export const updateProduct = async (req: any, res: Response) => {
         });
       }
       updateData.productCategory = category._id;  // Set productCategory to the category's ObjectId
+    }
+
+    // Fetch the subcategory using the provided productSubCategoryId
+    const subCategory = await SubCategory.findById(req.body.productSubCategoryId);
+    if (!subCategory) {
+      return res.status(400).json({
+        responseCode: 400,
+        responseMessage: "Invalid subcategory ID.",
+        data: null,
+      });
+    }
+
+    // Check if the category exists in the subcategory
+    if (subCategory.category.toString() !== req.body.productCategoryId) {
+      return res.status(400).json({
+        responseCode: 400,
+        responseMessage: "The provided category does not match the subcategory.",
+        data: null,
+      });
     }
 
     // Check if a new image is uploaded, and upload to Cloudinary
