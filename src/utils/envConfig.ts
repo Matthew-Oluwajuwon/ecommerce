@@ -11,6 +11,7 @@ const paystackSecretKey = process.env.PAYSTACK_SECRET_KEY;
 const paystackApiUrl = process.env.PAYSTACK_API_BASE_URL;
 const flutterWaveApiBaseUrl = process.env.FLUTTERWAVE_API_BASE_URL;
 const flutterWaveSecretKey = process.env.FLUTTER_WAVE_SECRET_KEY;
+const flutterWavePublickKey = process.env.FLUTTER_WAVE_PUBLIC_KEY;
 
 export {
   port,
@@ -21,5 +22,6 @@ export {
   paystackSecretKey,
   paystackApiUrl,
   flutterWaveApiBaseUrl,
-  flutterWaveSecretKey
+  flutterWaveSecretKey,
+  flutterWavePublickKey
 };

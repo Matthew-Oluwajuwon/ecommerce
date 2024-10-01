@@ -18,6 +18,146 @@ const orderRoutes = Router();
  *     description: Order management routes
  */
 
+
+/**
+ * @swagger
+ * /api/v1/order/verify-payment:
+ *   get:
+ *     summary: Verify payment status
+ *     tags: [Order Controller]
+ *     schema:
+ *       type: string
+ *       example: Bearer your_token_here
+ *     description: Verifies the payment status using the transaction reference returned from Paystack.
+ *     parameters:
+ *       - name: reference
+ *         in: query
+ *         required: true
+ *         description: The reference ID of the transaction.
+ *         schema:
+ *           type: string
+ *           example: "324234234h"
+ *       - name: paymentMethod
+ *         in: query
+ *         required: true
+ *         description: The payment method used for the transaction. Either PAYSTACK or FLUTTER_WAVE.
+ *         schema:
+ *           type: string
+ *           enum: 
+ *             - "PAYSTACK"
+ *             - "FLUTTER_WAVE"
+ *           example: "PAYSTACK"
+ *     responses:
+ *       200:
+ *         description: Payment verified successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 200
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "Payment verified successfully."
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     order:
+ *                       type: object
+ *                       description: The order details.
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: "60c72b2f9b1d8e001c8d4b32"
+ *                         userId:
+ *                           type: string
+ *                           example: "60c72b2f9b1d8e001c8d4b32"
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             type: object
+ *                             properties:
+ *                               productId:
+ *                                 type: string
+ *                                 example: "60c73b1f9b1d8e001c8d4b67"
+ *                               quantity:
+ *                                 type: integer
+ *                                 example: 2
+ *                               price:
+ *                                 type: number
+ *                                 example: 599.99
+ *                         totalAmount:
+ *                           type: number
+ *                           example: 1199.98
+ *                         status:
+ *                           type: string
+ *                           example: "paid"
+ *                     paymentData:
+ *                       type: object
+ *                       description: The payment details returned from Paystack.
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                           example: "60c73b1f9b1d8e001c8d4b67"
+ *                         status:
+ *                           type: string
+ *                           example: "success"
+ *                         amount:
+ *                           type: number
+ *                           example: 1199.98
+ *       400:
+ *         description: Payment verification failed.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 400
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "Payment verification failed."
+ *                 data:
+ *                   type: null
+ *       404:
+ *         description: Order not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 404
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "Order not found."
+ *                 data:
+ *                   type: null
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                   example: 500
+ *                 responseMessage:
+ *                   type: string
+ *                   example: "Internal Server Error."
+ *                 data:
+ *                   type: null
+ */
+
+// Verify payment route
+orderRoutes.get("/verify-payment", authenticateJWT, verifyPayment);
+
+
 /**
  * @swagger
  * /api/v1/order:
@@ -160,132 +300,6 @@ const orderRoutes = Router();
 // Route to post order
 orderRoutes.post("/", authenticateJWT, createOrder);
 
-/**
- * @swagger
- * /api/v1/order/verify-payment/{reference}:
- *   get:
- *     summary: Verify payment status
- *     tags: [Order Controller]
- *     schema:
- *        type: string
- *        example: Bearer your_token_here
- *     description: Verifies the payment status using the transaction reference returned from Paystack.
- *     parameters:
- *       - name: reference
- *         in: path
- *         required: true
- *         description: The reference ID of the transaction.
- *         schema:
- *           type: string
- *           example: "60c73b1f9b1d8e001c8d4b67"
- *     responses:
- *       200:
- *         description: Payment verified successfully.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 responseCode:
- *                   type: integer
- *                   example: 200
- *                 responseMessage:
- *                   type: string
- *                   example: "Payment verified successfully."
- *                 data:
- *                   type: object
- *                   properties:
- *                     order:
- *                       type: object
- *                       description: The order details.
- *                       properties:
- *                         _id:
- *                           type: string
- *                           example: "60c72b2f9b1d8e001c8d4b32"
- *                         userId:
- *                           type: string
- *                           example: "60c72b2f9b1d8e001c8d4b32"
- *                         items:
- *                           type: array
- *                           items:
- *                             type: object
- *                             properties:
- *                               productId:
- *                                 type: string
- *                                 example: "60c73b1f9b1d8e001c8d4b67"
- *                               quantity:
- *                                 type: integer
- *                                 example: 2
- *                               price:
- *                                 type: number
- *                                 example: 599.99
- *                         totalAmount:
- *                           type: number
- *                           example: 1199.98
- *                         status:
- *                           type: string
- *                           example: "paid"
- *                     paymentData:
- *                       type: object
- *                       description: The payment details returned from Paystack.
- *                       properties:
- *                         id:
- *                           type: string
- *                           example: "60c73b1f9b1d8e001c8d4b67"
- *                         status:
- *                           type: string
- *                           example: "success"
- *                         amount:
- *                           type: number
- *                           example: 1199.98
- *       400:
- *         description: Payment verification failed.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 responseCode:
- *                   type: integer
- *                   example: 400
- *                 responseMessage:
- *                   type: string
- *                   example: "Payment verification failed."
- *                 data:
- *                   type: null
- *       404:
- *         description: Order not found.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 responseCode:
- *                   type: integer
- *                   example: 404
- *                 responseMessage:
- *                   type: string
- *                   example: "Order not found."
- *                 data:
- *                   type: null
- *       500:
- *         description: Internal server error.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 responseCode:
- *                   type: integer
- *                   example: 500
- *                 responseMessage:
- *                   type: string
- *                   example: "Internal Server Error."
- *                 data:
- *                   type: null
- */
-// Verify payment route
-orderRoutes.get("/verify-payment/:reference", authenticateJWT, verifyPayment);
 
 /**
  * @swagger
