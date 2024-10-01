@@ -27,7 +27,7 @@ const orderRoutes = Router();
  *     schema:
  *        type: string
  *        example: Bearer your_token_here
- *     description: Create a new order based on the user's cart and provided shipping address.
+ *     description: Create a new order based on the user's cart and provided shipping address, payment method is either FLUTTER_WAVE or PAYSTACK.
  *     requestBody:
  *       required: true
  *       content:
