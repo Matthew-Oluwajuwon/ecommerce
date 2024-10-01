@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.paystackApiUrl = exports.paystackSecretKey = exports.emailUser = exports.emailPassword = exports.secretKey = exports.connectionString = exports.port = void 0;
+exports.flutterWaveSecretKey = exports.flutterWaveApiBaseUrl = exports.paystackApiUrl = exports.paystackSecretKey = exports.emailUser = exports.emailPassword = exports.secretKey = exports.connectionString = exports.port = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const port = process.env.PORT;
@@ -20,3 +20,7 @@ const paystackSecretKey = process.env.PAYSTACK_SECRET_KEY;
 exports.paystackSecretKey = paystackSecretKey;
 const paystackApiUrl = process.env.PAYSTACK_API_BASE_URL;
 exports.paystackApiUrl = paystackApiUrl;
+const flutterWaveApiBaseUrl = process.env.FLUTTERWAVE_API_BASE_URL;
+exports.flutterWaveApiBaseUrl = flutterWaveApiBaseUrl;
+const flutterWaveSecretKey = process.env.FLUTTER_WAVE_SECRET_KEY;
+exports.flutterWaveSecretKey = flutterWaveSecretKey;

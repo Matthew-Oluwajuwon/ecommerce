@@ -39,6 +39,13 @@ const orderRoutes = Router();
  *                 type: boolean
  *                 description: If user wants to use home address
  *                 example: false
+ *               paymentMethod:
+ *                 type: string
+ *                 description: Select the payment methodto use either PAYSTACK or FLUTTERWAVE
+ *                 enum:
+ *                    - PAYSTACK
+ *                    - FLUTTER_WAVE
+ *                 example: PAYSTACK
  *               callback_url:
  *                 type: string
  *                 description: The frontend URL you want the user to be returned to after payment
