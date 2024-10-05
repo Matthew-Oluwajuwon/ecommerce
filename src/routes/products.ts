@@ -27,9 +27,6 @@ const productRoutes = Router();
  *   get:
  *     summary: Retrieve all product categories with pagination
  *     tags: [Product Controller]
- *     schema:
- *        type: string
- *        example: Bearer your_token_here
  *     parameters:
  *       - in: query
  *         name: page
@@ -94,7 +91,7 @@ const productRoutes = Router();
  *                   type: string
  *                   example: Internal server error
  */
-productRoutes.get("/categories", authenticateJWT, getAllCategories);
+productRoutes.get("/categories", getAllCategories);
 
 /**
  * @swagger
@@ -102,9 +99,6 @@ productRoutes.get("/categories", authenticateJWT, getAllCategories);
  *   get:
  *     summary: Get all sub-categories
  *     tags: [Product Controller]
- *     schema:
- *        type: string
- *        example: Bearer your_token_here
  *     responses:
  *       200:
  *         description: Sub-categories fetched successfully
@@ -170,9 +164,6 @@ productRoutes.get("/sub-category", getAllSubCategories)
  *   get:
  *     summary: Get sub-categories by category ID
  *     tags: [Product Controller]
- *     schema:
- *        type: string
- *        example: Bearer your_token_here
  *     parameters:
  *       - name: categoryId
  *         in: path
@@ -262,9 +253,6 @@ productRoutes.get("/sub-category/:categoryId", getAllSubCategoryByCategoryId)
  *   get:
  *     summary: Get all products with pagination
  *     tags: [Product Controller]
- *     schema:
- *        type: string
- *        example: Bearer your_token_here
  *     parameters:
  *       - in: query
  *         name: page
@@ -307,7 +295,7 @@ productRoutes.get("/sub-category/:categoryId", getAllSubCategoryByCategoryId)
  *       500:
  *         description: Internal server error
  */
-productRoutes.get("/", authenticateJWT, getAllProducts);
+productRoutes.get("/", getAllProducts);
 
 /**
  * @swagger
@@ -315,9 +303,6 @@ productRoutes.get("/", authenticateJWT, getAllProducts);
  *   get:
  *     summary: Get a single product by ID
  *     tags: [Product Controller]
- *     schema:
- *        type: string
- *        example: Bearer your_token_here
  *     parameters:
  *       - in: path
  *         name: id
@@ -342,7 +327,7 @@ productRoutes.get("/", authenticateJWT, getAllProducts);
  *       500:
  *         description: Internal server error
  */
-productRoutes.get("/:id", authenticateJWT, getProductById);
+productRoutes.get("/:id", getProductById);
 
 /**
  * @swagger
